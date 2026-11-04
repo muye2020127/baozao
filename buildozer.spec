@@ -5,9 +5,10 @@ package.domain = org.muye
 source.dir = .
 source.include_exts = py
 version = 0.1
-requirements = python3,kivy,ccxt,openssl,requests,urllib3,chardet,idna,certifi
+requirements = python3,kivy,ccxt,pandas,openssl,requests,jnius
 orientation = portrait
 fullscreen = 0
+android.accept_sdk_license = True
 
 [buildozer]
 log_level = 2
