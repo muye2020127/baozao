@@ -1,33 +1,19 @@
-import ccxt, threading, time
 from kivy.app import App
 from kivy.uix.label import Label
-from kivy.clock import Clock
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
 
 class QuantApp(App):
     def build(self):
-        self.label = Label(text="正在连接欧易...", font_size="20sp", halign="center")
-        threading.Thread(target=self.update_price, daemon=True).start()
-        return self.label
+        layout = BoxLayout(orientation='vertical')
+        title = Label(text="🚀 暴躁小海量化终端", font_size='24sp', color=(0,1,0,1))
+        price = Label(text="BTC: 78,600 USDT\n(+1.16%)", font_size='40sp', color=(0,1,0,1))
+        btn = Button(text="启动量化机器人", size_hint=(1, 0.2), background_color=(0,1,0,1))
+        
+        layout.add_widget(title)
+        layout.add_widget(price)
+        layout.add_widget(btn)
+        return layout
 
-    def update_price(self):
-        e = ccxt.okx()
-        last_p = 0
-        while True:
-            try:
-                p = e.fetch_ticker("BTC/USDT")["last"]
-                if last_p == 0:
-                    text = f"初始价格: {p} USDT"
-                else:
-                    diff = p - last_p
-                    if diff > 0:
-                        text = f"涨了! 现价: {p} USDT\n(+{diff:.2f})"
-                    else:
-                        text = f"跌了! 现价: {p} USDT\n({diff:.2f})"
-                last_p = p
-                Clock.schedule_once(lambda dt, t=text: setattr(self.label, "text", t))
-            except Exception as err:
-                Clock.schedule_once(lambda dt: setattr(self.label, "text", "网络波动，重连中..."))
-            time.sleep(3)
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     QuantApp().run()
